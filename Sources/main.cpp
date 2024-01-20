@@ -656,7 +656,7 @@ namespace {
 		HandleScope scope(args.GetIsolate());
 		Local<External> field = Local<External>::Cast(args[0]->ToObject(isolate->GetCurrentContext()).ToLocalChecked()->GetInternalField(0));
 		kinc_g4_index_buffer_t *buffer = (kinc_g4_index_buffer_t *)field->Value();
-		int *vertices = kinc_g4_index_buffer_lock(buffer);
+		void *vertices = kinc_g4_index_buffer_lock(buffer, 0, kinc_g4_index_buffer_count(buffer));
 		std::unique_ptr<v8::BackingStore> backing = v8::ArrayBuffer::NewBackingStore((void *)vertices, kinc_g4_index_buffer_count(buffer) * sizeof(int), [](void*, size_t, void*) {}, nullptr);
 		Local<ArrayBuffer> abuffer = ArrayBuffer::New(isolate, std::move(backing));
 		args.GetReturnValue().Set(Uint32Array::New(abuffer, 0, kinc_g4_index_buffer_count(buffer)));
@@ -666,7 +666,7 @@ namespace {
 		HandleScope scope(args.GetIsolate());
 		Local<External> field = Local<External>::Cast(args[0]->ToObject(isolate->GetCurrentContext()).ToLocalChecked()->GetInternalField(0));
 		kinc_g4_index_buffer_t *buffer = (kinc_g4_index_buffer_t *)field->Value();
-		kinc_g4_index_buffer_unlock(buffer);
+		kinc_g4_index_buffer_unlock(buffer, kinc_g4_index_buffer_count(buffer));
 	}
 
 	void krom_set_indexbuffer(const FunctionCallbackInfo<Value> &args) {

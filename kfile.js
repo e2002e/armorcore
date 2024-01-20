@@ -73,6 +73,8 @@ if (flags.with_audio) {
 	project.addDefine('WITH_AUDIO');
 }
 
+project.addDefine('KINC_IMAGE_STANDARD_MALLOC');
+
 if (platform === Platform.HTML5) {
 	project.addFile('Sources/main_html5.c');
 	// kmake/lib/kmake/Exporters/EmscriptenExporter.js:
